@@ -1,0 +1,26 @@
+.googleButton {
+  background-color: #cb3837;
+  color: #fff;
+  min-width: 25vw;
+  max-width: 25vw;
+  min-height: 10vh;
+  max-height: 10vh;
+  margin: 1rem;
+  cursor: pointer;
+}
+
+.facebookButton {
+  background-color: #4c69ba;
+  color: #fff;
+  min-width: 25vw;
+  max-width: 25vw;
+  min-height: 10vh;
+  max-height: 10vh;
+  margin: 1rem;
+  cursor: pointer;
+}
+
+.title {
+  text-align: center;
+  margin: 3rem auto;
+}

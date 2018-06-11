@@ -19,8 +19,8 @@ class DecadeDropdown extends React.Component {
   render() {
     return (
       <Dropdown size="sm" isOpen={this.props.open} toggle={this.props.toggle}>
-        <DropdownToggle color="info" caret>
-          Década de Nascimento
+        <DropdownToggle outline color="secondary" caret>
+          Década Nasc.
         </DropdownToggle>
         <DropdownMenu right>
           <DropdownItem onClick={this.props.change}>1910</DropdownItem>

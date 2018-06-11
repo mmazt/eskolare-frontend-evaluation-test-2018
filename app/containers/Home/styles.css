@@ -1,0 +1,15 @@
+.headerRow {
+  padding: 1rem;
+}
+
+.nameCol {
+  padding-top: 0.5rem;
+}
+
+.paddingRow {
+  padding: 0.5rem;
+}
+
+.textCol {
+  text-align: center;
+}

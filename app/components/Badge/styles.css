@@ -1,0 +1,16 @@
+.transparentToggle {
+  background-color: transparent;
+  border: none;
+}
+
+.transparentToggle:hover {
+  background-color: transparent;
+  border: none;
+}
+
+.transparentToggle:active {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  box-shadow: none;
+}

@@ -40,6 +40,7 @@ import Badge from '../../components/Badge';
 import DecadeDropdown from '../../components/DecadeDropdown';
 import LetterDropdown from '../../components/LetterDropdown';
 import InsertModal from '../../components/InsertModal';
+import './styles.css';
 
 // eslint-disable-next-line react/prefer-stateless-function
 export class Home extends React.Component {
@@ -136,12 +137,15 @@ export class Home extends React.Component {
   rowGetter = (i) => this.props.data[i];
 
   render() {
-    const tableHeight = window.innerHeight - 50;
+    const tableHeight = window.innerHeight * 0.6;
     const checkForm = this.checkForm();
     return (
       <Container>
-        <Row>
-          <Col sm={{ size: 'auto', offset: 10 }}>
+        <Row className="headerRow">
+          <Col sm={{ size: 3 }} md={{ size: 4 }} className="nameCol">
+            <h3>Frontend Test</h3>
+          </Col>
+          <Col sm={{ size: '1' }} md={{ size: '1', offset: 7 }}>
             <Badge
               open={this.state.badgeOpen}
               name={this.props.userData.name}
@@ -151,32 +155,34 @@ export class Home extends React.Component {
             />
           </Col>
         </Row>
-        <Row>
-          <InputGroup size="sm">
-            <Input
-              onChange={this.props.onChangeSearchTerm}
-              onKeyPress={this.props.onEnterSearch}
-            />
-            <InputGroupAddon addonType="prepend">
-              <Button color="primary" onClick={this.props.onSubmitSearch}>
-                {' '}
-                <FormattedMessage {...messages.searchButton} />
-              </Button>
-            </InputGroupAddon>
-          </InputGroup>
-        </Row>
-        <Row>
-          <Col>
-            <p className="text-info">Filtrar por:</p>
+        <Row className="paddingRow">
+          <Col sm={{ size: 9, offset: 2 }} md={{ size: 6, offset: 3 }}>
+            <InputGroup size="sm">
+              <Input
+                onChange={this.props.onChangeSearchTerm}
+                onKeyPress={this.props.onEnterSearch}
+              />
+              <InputGroupAddon addonType="prepend">
+                <Button color="primary" onClick={this.props.onSubmitSearch}>
+                  {' '}
+                  <FormattedMessage {...messages.searchButton} />
+                </Button>
+              </InputGroupAddon>
+            </InputGroup>
           </Col>
-          <Col>
+        </Row>
+        <Row className="textCol">
+          <Col sm={{ size: 2, offset: 2 }} md={{ size: 2, offset: 3 }}>
+            <p>Filtrar por:</p>
+          </Col>
+          <Col sm={{ size: 3 }} md={{ size: 2 }}>
             <DecadeDropdown
               open={this.state.dropdownDecadeOpen}
               change={this.decadeChange}
               toggle={this.toggleDecadeDropdown}
             />
           </Col>
-          <Col>
+          <Col sm={{ size: 3 }} md={{ size: 2 }}>
             <LetterDropdown
               open={this.state.dropdownInitialOpen}
               change={this.letterChange}
@@ -184,10 +190,10 @@ export class Home extends React.Component {
             />
           </Col>
         </Row>
-        <Row>
-          <Col>
+        <Row className="paddingRow">
+          <Col sm={{ size: 'auto' }}>
             <Button size="sm" color="primary" onClick={this.toggle}>
-              Adicionar Novo
+              + Adicionar Novo
             </Button>
           </Col>
         </Row>

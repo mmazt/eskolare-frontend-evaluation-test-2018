@@ -19,8 +19,8 @@ class LetterDropdown extends React.Component {
   render() {
     return (
       <Dropdown size="sm" isOpen={this.props.open} toggle={this.props.toggle}>
-        <DropdownToggle color="info" caret>
-          Inicial do Nome
+        <DropdownToggle outline color="secondary" caret>
+          Inicial Nome
         </DropdownToggle>
         <DropdownMenu right>
           <DropdownItem onClick={this.props.change}>A - E</DropdownItem>

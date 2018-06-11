@@ -8,6 +8,6 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   searchButton: {
     id: 'app.containers.Home.searchButton',
-    defaultMessage: 'Procurar',
+    defaultMessage: 'Buscar',
   },
 });
