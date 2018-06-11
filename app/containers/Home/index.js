@@ -9,20 +9,9 @@ import {
   Button,
   Container,
   Col,
-  Dropdown,
-  DropdownMenu,
-  DropdownToggle,
-  DropdownItem,
-  Form,
-  FormGroup,
   Input,
   InputGroup,
   InputGroupAddon,
-  Label,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
   Row,
 } from 'reactstrap';
 
@@ -48,6 +37,9 @@ import {
 import { makeSelectStatus, makeSelectUser } from '../App/selectors';
 import { logout } from '../App/actions';
 import Badge from '../../components/Badge';
+import DecadeDropdown from '../../components/DecadeDropdown';
+import LetterDropdown from '../../components/LetterDropdown';
+import InsertModal from '../../components/InsertModal';
 
 // eslint-disable-next-line react/prefer-stateless-function
 export class Home extends React.Component {
@@ -104,7 +96,7 @@ export class Home extends React.Component {
     this.props.onCacheData(newItem);
   };
 
-  clerData = () => {
+  clearData = () => {
     this.setState({
       newItem: { name: '', lastName: '', phone: '', birthDate: '' },
     });
@@ -178,47 +170,18 @@ export class Home extends React.Component {
             <p className="text-info">Filtrar por:</p>
           </Col>
           <Col>
-            <Dropdown
-              size="sm"
-              isOpen={this.state.dropdownDecadeOpen}
+            <DecadeDropdown
+              open={this.state.dropdownDecadeOpen}
+              change={this.decadeChange}
               toggle={this.toggleDecadeDropdown}
-            >
-              <DropdownToggle color="info" caret>
-                Década de Nascimento
-              </DropdownToggle>
-              <DropdownMenu right>
-                <DropdownItem onClick={this.decadeChange}>1910</DropdownItem>
-                <DropdownItem onClick={this.decadeChange}>1920</DropdownItem>
-                <DropdownItem onClick={this.decadeChange}>1930</DropdownItem>
-                <DropdownItem onClick={this.decadeChange}>1940</DropdownItem>
-                <DropdownItem onClick={this.decadeChange}>1950</DropdownItem>
-                <DropdownItem onClick={this.decadeChange}>1960</DropdownItem>
-                <DropdownItem onClick={this.decadeChange}>1970</DropdownItem>
-                <DropdownItem onClick={this.decadeChange}>1980</DropdownItem>
-                <DropdownItem onClick={this.decadeChange}>1990</DropdownItem>
-                <DropdownItem onClick={this.decadeChange}>2000</DropdownItem>
-                <DropdownItem onClick={this.decadeChange}>2010</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
+            />
           </Col>
           <Col>
-            <Dropdown
-              size="sm"
-              isOpen={this.state.dropdownInitialOpen}
+            <LetterDropdown
+              open={this.state.dropdownInitialOpen}
+              change={this.letterChange}
               toggle={this.toggleInitialDropdown}
-            >
-              <DropdownToggle color="info" caret>
-                Inicial do Nome
-              </DropdownToggle>
-              <DropdownMenu right>
-                <DropdownItem onClick={this.letterChange}>A - E</DropdownItem>
-                <DropdownItem onClick={this.letterChange}>F - J</DropdownItem>
-                <DropdownItem onClick={this.letterChange}>K - O</DropdownItem>
-                <DropdownItem onClick={this.letterChange}>P - T</DropdownItem>
-                <DropdownItem onClick={this.letterChange}>U - Y</DropdownItem>
-                <DropdownItem onClick={this.letterChange}>Z</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
+            />
           </Col>
         </Row>
         <Row>
@@ -241,63 +204,15 @@ export class Home extends React.Component {
             ''
           )}
         </Row>
-        <Modal isOpen={this.state.modal} toggle={this.toggle} centered>
-          <ModalHeader toggle={this.toggle}>Inserir novo item</ModalHeader>
-          <ModalBody>
-            <Form>
-              <FormGroup>
-                <Label for="nameInput">Nome</Label>
-                <Input
-                  required
-                  type="text"
-                  name="name"
-                  value={this.state.newItem.name}
-                  onChange={this.changeData}
-                />
-              </FormGroup>
-              <FormGroup>
-                <Label for="lastNameInput">Sobrenome</Label>
-                <Input
-                  required
-                  type="text"
-                  name="lastName"
-                  value={this.state.newItem.lastName}
-                  onChange={this.changeData}
-                />
-              </FormGroup>
-              <FormGroup>
-                <Label for="phoneInput">Telefone</Label>
-                <Input
-                  required
-                  type="text"
-                  name="phone"
-                  value={this.state.newItem.phone}
-                  onChange={this.changeData}
-                />
-              </FormGroup>
-              <FormGroup>
-                <Label for="birthDateInput">Data de Nasc.</Label>
-                <Input
-                  required
-                  type="date"
-                  value={this.state.newItem.birthDate}
-                  name="birthDate"
-                  onChange={this.changeData}
-                />
-              </FormGroup>
-            </Form>
-          </ModalBody>
-          <ModalFooter>
-            <Button onClick={this.clearData}>Limpar</Button>
-            <Button
-              color="success"
-              disabled={checkForm}
-              onClick={this.insertData}
-            >
-              Inserir
-            </Button>
-          </ModalFooter>
-        </Modal>
+        <InsertModal
+          open={this.state.modal}
+          toggle={this.toggle}
+          data={this.state.newItem}
+          changeData={this.changeData}
+          clearData={this.clearData}
+          insertData={this.insertData}
+          check={checkForm}
+        />
       </Container>
     );
   }
