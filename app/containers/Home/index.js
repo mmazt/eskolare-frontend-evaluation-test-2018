@@ -7,6 +7,12 @@ import { compose } from 'redux';
 import ReactDataGrid from 'react-data-grid';
 import {
   Button,
+  Container,
+  Col,
+  Dropdown,
+  DropdownMenu,
+  DropdownToggle,
+  DropdownItem,
   Form,
   FormGroup,
   Input,
@@ -17,6 +23,7 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
+  Row,
 } from 'reactstrap';
 
 import injectSaga from 'utils/injectSaga';
@@ -35,14 +42,23 @@ import {
   cacheData,
   insertData,
   clearCache,
+  filter,
+  sort,
 } from './actions';
+import { makeSelectStatus, makeSelectUser } from '../App/selectors';
+import { logout } from '../App/actions';
+import Badge from '../../components/Badge';
 
 // eslint-disable-next-line react/prefer-stateless-function
 export class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      badgeOpen: false,
       modal: false,
+      dropdownDecadeOpen: false,
+      dropdownInitialOpen: false,
+      dropdownInitialActive: '',
       newItem: {
         name: '',
         lastName: '',
@@ -52,9 +68,19 @@ export class Home extends React.Component {
     };
   }
 
+  componentWillMount() {
+    if (this.props.status && this.props.status === 'disconnected') {
+      this.props.history.push('/login');
+    }
+  }
+
   componentDidMount() {
     this.props.onCreateData();
   }
+
+  toggleBadge = () => {
+    this.setState({ badgeOpen: !this.state.badgeOpen });
+  };
 
   toggle = () => {
     this.setState({
@@ -64,6 +90,13 @@ export class Home extends React.Component {
     this.props.onClearData();
   };
 
+  toggleDecadeDropdown = () => {
+    this.setState({ dropdownDecadeOpen: !this.state.dropdownDecadeOpen });
+  };
+
+  toggleInitialDropdown = () => {
+    this.setState({ dropdownInitialOpen: !this.state.dropdownInitialOpen });
+  };
   changeData = (evt) => {
     const { newItem } = this.state;
     newItem[evt.target.name] = evt.target.value;
@@ -78,9 +111,22 @@ export class Home extends React.Component {
     this.props.onClearData();
   };
 
+  logout = () => {
+    this.props.onLogout();
+    this.props.history.push('/login');
+  };
+
   insertData = () => {
     this.props.onInsertData();
     this.toggle();
+  };
+
+  letterChange = (evt) => {
+    this.props.onFilter(evt.target.innerText, 'letter');
+  };
+
+  decadeChange = (evt) => {
+    this.props.onFilter(evt.target.innerText, 'date');
   };
 
   checkForm = () => {
@@ -101,29 +147,101 @@ export class Home extends React.Component {
     const tableHeight = window.innerHeight - 50;
     const checkForm = this.checkForm();
     return (
-      <div>
-        <FormattedMessage {...messages.header} />
-        <InputGroup>
-          <Input
-            onChange={this.props.onChangeSearchTerm}
-            onKeyPress={this.props.onEnterSearch}
-          />
-          <InputGroupAddon addonType="prepend">
-            <Button onClick={this.props.onSubmitSearch}>Procurar</Button>
-          </InputGroupAddon>
-        </InputGroup>
-        <Button onClick={this.toggle}>Adicionar Novo</Button>
-        {this.props.data && this.props.columns ? (
-          <ReactDataGrid
-            columns={this.props.columns}
-            rowsCount={this.props.data.length}
-            rowGetter={this.rowGetter}
-            minHeight={tableHeight}
-          />
-        ) : (
-          ''
-        )}
-        <Modal isOpen={this.state.modal} toggle={this.toggle}>
+      <Container>
+        <Row>
+          <Col sm={{ size: 'auto', offset: 10 }}>
+            <Badge
+              open={this.state.badgeOpen}
+              name={this.props.userData.name}
+              img={this.props.userData.picture}
+              toggle={this.toggleBadge}
+              logout={this.logout}
+            />
+          </Col>
+        </Row>
+        <Row>
+          <InputGroup size="sm">
+            <Input
+              onChange={this.props.onChangeSearchTerm}
+              onKeyPress={this.props.onEnterSearch}
+            />
+            <InputGroupAddon addonType="prepend">
+              <Button color="primary" onClick={this.props.onSubmitSearch}>
+                {' '}
+                <FormattedMessage {...messages.searchButton} />
+              </Button>
+            </InputGroupAddon>
+          </InputGroup>
+        </Row>
+        <Row>
+          <Col>
+            <p className="text-info">Filtrar por:</p>
+          </Col>
+          <Col>
+            <Dropdown
+              size="sm"
+              isOpen={this.state.dropdownDecadeOpen}
+              toggle={this.toggleDecadeDropdown}
+            >
+              <DropdownToggle color="info" caret>
+                Década de Nascimento
+              </DropdownToggle>
+              <DropdownMenu right>
+                <DropdownItem onClick={this.decadeChange}>1910</DropdownItem>
+                <DropdownItem onClick={this.decadeChange}>1920</DropdownItem>
+                <DropdownItem onClick={this.decadeChange}>1930</DropdownItem>
+                <DropdownItem onClick={this.decadeChange}>1940</DropdownItem>
+                <DropdownItem onClick={this.decadeChange}>1950</DropdownItem>
+                <DropdownItem onClick={this.decadeChange}>1960</DropdownItem>
+                <DropdownItem onClick={this.decadeChange}>1970</DropdownItem>
+                <DropdownItem onClick={this.decadeChange}>1980</DropdownItem>
+                <DropdownItem onClick={this.decadeChange}>1990</DropdownItem>
+                <DropdownItem onClick={this.decadeChange}>2000</DropdownItem>
+                <DropdownItem onClick={this.decadeChange}>2010</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </Col>
+          <Col>
+            <Dropdown
+              size="sm"
+              isOpen={this.state.dropdownInitialOpen}
+              toggle={this.toggleInitialDropdown}
+            >
+              <DropdownToggle color="info" caret>
+                Inicial do Nome
+              </DropdownToggle>
+              <DropdownMenu right>
+                <DropdownItem onClick={this.letterChange}>A - E</DropdownItem>
+                <DropdownItem onClick={this.letterChange}>F - J</DropdownItem>
+                <DropdownItem onClick={this.letterChange}>K - O</DropdownItem>
+                <DropdownItem onClick={this.letterChange}>P - T</DropdownItem>
+                <DropdownItem onClick={this.letterChange}>U - Y</DropdownItem>
+                <DropdownItem onClick={this.letterChange}>Z</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <Button size="sm" color="primary" onClick={this.toggle}>
+              Adicionar Novo
+            </Button>
+          </Col>
+        </Row>
+        <Row>
+          {this.props.data && this.props.columns ? (
+            <ReactDataGrid
+              columns={this.props.columns}
+              rowsCount={this.props.data.length}
+              rowGetter={this.rowGetter}
+              minHeight={tableHeight}
+              onGridSort={this.props.onSort}
+            />
+          ) : (
+            ''
+          )}
+        </Row>
+        <Modal isOpen={this.state.modal} toggle={this.toggle} centered>
           <ModalHeader toggle={this.toggle}>Inserir novo item</ModalHeader>
           <ModalBody>
             <Form>
@@ -170,13 +288,17 @@ export class Home extends React.Component {
             </Form>
           </ModalBody>
           <ModalFooter>
-            <Button onClick={this.clerData}>Cancelar</Button>
-            <Button disabled={checkForm} onClick={this.insertData}>
+            <Button onClick={this.clearData}>Limpar</Button>
+            <Button
+              color="success"
+              disabled={checkForm}
+              onClick={this.insertData}
+            >
               Inserir
             </Button>
           </ModalFooter>
         </Modal>
-      </div>
+      </Container>
     );
   }
 }
@@ -184,6 +306,8 @@ export class Home extends React.Component {
 Home.propTypes = {
   columns: PropTypes.array,
   data: PropTypes.array,
+  status: PropTypes.string,
+  userData: PropTypes.any,
   onCreateData: PropTypes.func.isRequired,
   onChangeSearchTerm: PropTypes.func,
   onSubmitSearch: PropTypes.func,
@@ -191,12 +315,18 @@ Home.propTypes = {
   onCacheData: PropTypes.func,
   onClearData: PropTypes.func,
   onInsertData: PropTypes.func,
+  onFilter: PropTypes.func,
+  onSort: PropTypes.func,
+  onLogout: PropTypes.func,
+  history: PropTypes.any,
 };
 
 const mapStateToProps = createStructuredSelector({
   home: makeSelectHome(),
   data: makeSelectResults(),
   columns: makeSelectColumns(),
+  status: makeSelectStatus(),
+  userData: makeSelectUser(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -209,6 +339,9 @@ function mapDispatchToProps(dispatch) {
     onCacheData: (data) => dispatch(cacheData(data)),
     onClearData: () => dispatch(clearCache()),
     onInsertData: () => dispatch(insertData()),
+    onFilter: (data, type) => dispatch(filter(data, type)),
+    onSort: (column, direction) => dispatch(sort(column, direction)),
+    onLogout: () => dispatch(logout()),
   };
 }
 

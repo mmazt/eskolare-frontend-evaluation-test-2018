@@ -17,6 +17,12 @@ import {
   INSERT_DATA_ERROR,
   CACHE_DATA,
   CLEAR_CACHE,
+  FILTER,
+  FILTER_SUCCESS,
+  FILTER_ERROR,
+  SORT,
+  SORT_SUCCESS,
+  SORT_ERROR,
 } from './constants';
 
 export function loadDataAction() {
@@ -96,5 +102,49 @@ export function cacheData(data) {
 export function clearCache() {
   return {
     type: CLEAR_CACHE,
+  };
+}
+
+export function filter(data, filterType) {
+  return {
+    type: FILTER,
+    data,
+    filterType,
+  };
+}
+
+export function filterSuccess(data) {
+  return {
+    type: FILTER_SUCCESS,
+    data,
+  };
+}
+
+export function filterError(error) {
+  return {
+    type: FILTER_ERROR,
+    error,
+  };
+}
+
+export function sort(column, direction) {
+  return {
+    type: SORT,
+    column,
+    direction,
+  };
+}
+
+export function sortSuccess(data) {
+  return {
+    type: SORT_SUCCESS,
+    data,
+  };
+}
+
+export function sortError(error) {
+  return {
+    type: SORT_ERROR,
+    error,
   };
 }

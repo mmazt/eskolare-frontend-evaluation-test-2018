@@ -6,8 +6,8 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  header: {
-    id: 'app.containers.Home.header',
-    defaultMessage: 'This is Home container !',
+  searchButton: {
+    id: 'app.containers.Home.searchButton',
+    defaultMessage: 'Procurar',
   },
 });

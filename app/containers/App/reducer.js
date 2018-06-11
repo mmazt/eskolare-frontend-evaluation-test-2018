@@ -12,27 +12,29 @@
 
 import { fromJS } from 'immutable';
 
-import { LOAD_LOGIN_SUCCESS, LOAD_LOGIN, LOAD_LOGIN_ERROR } from './constants';
+import { LOAD_LOGIN, LOGOUT } from './constants';
 
 // The initial state of the App
 const initialState = fromJS({
-  loading: false,
-  error: false,
-  loginData: { token: '', username: '', status: 'connected' },
+  status: 'disconnected',
+  loginData: { token: '', expiresIn: '' },
+  userData: { name: '', picture: '' },
   loginType: '',
 });
 
 function appReducer(state = initialState, action) {
   switch (action.type) {
     case LOAD_LOGIN:
-      return state.set('loading', true).set('error', false);
-    case LOAD_LOGIN_SUCCESS:
       return state
         .set('loginData', action.loginData)
-        .set('loading', false)
+        .set('status', 'connected')
+        .set('userData', action.userData)
         .set('loginType', action.loginType);
-    case LOAD_LOGIN_ERROR:
-      return state.set('error', action.error).set('loading', false);
+    case LOGOUT:
+      return state
+        .set('loginData', {})
+        .set('userData', {})
+        .set('status', 'disconnected');
     default:
       return state;
   }

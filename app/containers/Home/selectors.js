@@ -35,6 +35,12 @@ const makeSelectTerm = () =>
 const makeSelectCache = () =>
   createSelector(selectHomeDomain, (substate) => substate.get('cacheData'));
 
+const makeSelectFilter = () =>
+  createSelector(selectHomeDomain, (substate) => substate.get('filter'));
+
+const makeSelectSort = () =>
+  createSelector(selectHomeDomain, (substate) => substate.get('sort'));
+
 export default makeSelectHome;
 export {
   selectHomeDomain,
@@ -43,4 +49,6 @@ export {
   makeSelectResults,
   makeSelectTerm,
   makeSelectCache,
+  makeSelectFilter,
+  makeSelectSort,
 };
