@@ -1,0 +1,12 @@
+export const LOAD_DATA = 'app/Home/LOAD_DATA';
+export const LOAD_DATA_SUCCESS = 'app/Home/LOAD_DATA_SUCCESS';
+export const LOAD_DATA_ERROR = 'app/Home/LOAD_DATA_ERROR';
+export const SEARCH_DATA = 'app/Home/SEARCH_DATA';
+export const SEARCH_DATA_SUCCESS = 'app/Home/SEARCH_DATA_SUCCESS';
+export const SEARCH_DATA_ERROR = 'app/Home/SEARCH_DATA_ERROR';
+export const SEARCH_TERM = 'app/Home/SEARCH_TERM';
+export const INSERT_DATA = 'app/Home/INSERT_DATA';
+export const CACHE_DATA = 'app/Home/CACHE_DATA';
+export const INSERT_DATA_SUCCESS = 'app/Home/INSERT_DATA_SUCCESS';
+export const INSERT_DATA_ERROR = 'app/Home/INSERT_DATA_ERROR';
+export const CLEAR_CACHE = 'app/Home/CLEAR_CACHE';
